@@ -1,12 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    <p>halo</p>
-    <script src="script.js"></script>
-</body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1>Weather App Fan</h1>
+      </header>
+      <main id="main">
+        <section>
+          <h2 id="header-form">Cari Kota Tujuan Anda</h2>
+          <form id="form">
+            <input type="text" placeholder="Nama Kota" id="input-form" required />
+            <button type="submit" id="search-btn">Search</button>
+          </form>
+          <div class="hidden" id="loading">Loading...</div>
+          <div class="hidden" id="displayWeather"></div>
+          <div class="hidden" id="error">Kota tidak ditemukan...</div>
+        </section>
+      </main>
+      <footer>
+        <p>&copy; 2026 Weather App Fan</p>
+      </footer>
+    </div>
+  </body>
 </html>
