@@ -6,40 +6,65 @@ const inputButton = document.getElementById("search-btn");
 const loading = document.getElementById("loading");
 const error = document.getElementById("error");
 const weather = document.getElementById("displayWeather");
-
-console.log("input form :", inputForm);
-console.log("search button :", inputButton);
-console.log("loading :", loading);
-console.log("error :", error);
-console.log("weather :", weather);
-
 const weatherForm = document.getElementById("form");
 
-weatherForm.addEventListener("submit", (event) => {
-  event.preventDefault();
+fetchweather = async (city) => {
+  try {
+    showLoading();
+    error.classList.add("hidden");
+    weather.classList.add("hidden");
+
+    const url = `${API_URL}?q=${city}&appid=${API_KEY}&units=metric`;
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error("Kota tidak ditemukan");
+    }
+
+    const data = await response.json();
+
+    displayWeather(data);
+  } catch (err) {
+    showError(err);
+  } finally {
+    hideLoading();
+  }
+};
+
+weatherForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
   const city = inputForm.value.trim();
 
   if (!city) {
-    error.textContent = "Nama kota tidak boleh kosong";
+    error.textContent = "Nama Kota Salah";
     error.classList.remove("hidden");
     return;
   }
 
-  error.classList.add("hidden");
-  weather.classList.add("hidden");
-
-  loading.classList.remove("hidden");
-
-  console.log("Kota yang dicari:", city);
-
-  setTimeout(() => {
-    loading.classList.add("hidden");
-
-    weather.innerHTML = `
-      <div class="weather-item">Kota: ${city}</div>
-      <div class="weather-item">Status: (dummy data)</div>
-    `;
-    weather.classList.remove("hidden");
-  }, 1000);
+  fetchweather(city);
 });
+
+function displayWeather(data) {
+  const { temp } = data.main;
+  const { name } = data;
+  weather.innerHTML = `
+      <div class=weather-item">Kota : ${name} <div/> 
+      <div class=weather-item">temperature : ${temp}^C <div/>
+    `;
+
+  weather.classList.remove("hidden");
+}
+
+function showError(err) {
+  error.textContent = err.message;
+  error.classList.remove("hidden");
+}
+
+function showLoading() {
+  loading.classList.remove("hidden");
+}
+
+function hideLoading() {
+  loading.classList.add("hidden");
+}
